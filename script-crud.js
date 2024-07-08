@@ -10,6 +10,7 @@ const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-ta
 vez na aplicação não vai ter nada ainda salvo no localStorage. Então pra se prevenir disso, caso tenha algo
 vai retornar e caso não tenha vai retornar vazio pra justamente termos um array pra jogarmos tarefas dentro.*/
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+let tarefaSelecionada = null;
 
 function atualizarTarefas() {
     localStorage.setItem("tarefas", JSON.stringify(tarefas));
@@ -66,7 +67,19 @@ function criaElementoTarefa(tarefa) {
     li.append(botao);
 
     li.onclick = () => {
+        document.querySelectorAll('.app__section-task-list-item-active').forEach((elemento) => {
+            elemento.classList.remove('app__section-task-list-item-active');
+        });
+        
+        if (tarefaSelecionada == tarefa) {
+            paragrafoDescricaoTarefa.textContent = '';
+            tarefaSelecionada = null;
+            return;
+        }
+
+        tarefaSelecionada = tarefa;
         paragrafoDescricaoTarefa.textContent = tarefa.descricao;
+
         li.classList.add('app__section-task-list-item-active');
     };
 
