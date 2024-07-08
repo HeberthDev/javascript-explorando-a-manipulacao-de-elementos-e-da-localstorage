@@ -10,6 +10,10 @@ vez na aplicação não vai ter nada ainda salvo no localStorage. Então pra se 
 vai retornar e caso não tenha vai retornar vazio pra justamente termos um array pra jogarmos tarefas dentro.*/
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
+function atualizarTarefas() {
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+}
+
 function criaElementoTarefa(tarefa) {
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');
@@ -45,6 +49,8 @@ function criaElementoTarefa(tarefa) {
     botao.onclick = () => {
         const novaDescricao = prompt("Qual é o novo nome da tarefa?");
         paragrafo.textContent = novaDescricao;
+        tarefa.descricao = novaDescricao;
+        atualizarTarefas();
     }
 
     const imagemBotao = document.createElement('img');
@@ -71,7 +77,7 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
     tarefas.push(tarefa);
     const elementoTarefa = criaElementoTarefa(tarefa);
     ulTarefas.append(elementoTarefa);
-    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    atualizarTarefas();
     textarea.value = '';
     formAdicionarTarefa.classList.add('hidden');
 });
