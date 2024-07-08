@@ -3,8 +3,12 @@
 const btnAdicionarTarefa = document.querySelector('.app__button--add-task');
 const formAdicionarTarefa = document.querySelector('.app__form-add-task');
 const textarea = document.querySelector('.app__form-textarea');
+const ulTarefas = document.querySelector('.app__section-task-list');
 
-const tarefas = [];
+/*As tarefas estão desse jeito porquê está retornando as tarefas salvas. E caso a pessoa entre a primeira
+vez na aplicação não vai ter nada ainda salvo no localStorage. Então pra se prevenir disso, caso tenha algo
+vai retornar e caso não tenha vai retornar vazio pra justamente termos um array pra jogarmos tarefas dentro.*/
+const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
 function criaElementoTarefa(tarefa) {
     const li = document.createElement('li');
@@ -45,6 +49,8 @@ function criaElementoTarefa(tarefa) {
     li.append(svg);
     li.append(paragrafo);
     li.append(botao);
+
+    return li;
 }
 
 btnAdicionarTarefa.addEventListener('click', () => {
@@ -58,5 +64,10 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
     };
 
     tarefas.push(tarefa);
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
 });
+
+tarefas.forEach(tarefa => {
+    const elementoTarefa = criaElementoTarefa(tarefa);
+    ulTarefas.append(elementoTarefa);
+})
