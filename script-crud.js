@@ -4,6 +4,7 @@ const btnAdicionarTarefa = document.querySelector('.app__button--add-task');
 const formAdicionarTarefa = document.querySelector('.app__form-add-task');
 const textarea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
+const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 
 /*As tarefas estão desse jeito porquê está retornando as tarefas salvas. E caso a pessoa entre a primeira
 vez na aplicação não vai ter nada ainda salvo no localStorage. Então pra se prevenir disso, caso tenha algo
@@ -63,6 +64,11 @@ function criaElementoTarefa(tarefa) {
     li.append(svg);
     li.append(paragrafo);
     li.append(botao);
+
+    li.onclick = () => {
+        paragrafoDescricaoTarefa.textContent = tarefa.descricao;
+        li.classList.add('app__section-task-list-item-active');
+    };
 
     return li;
 }
