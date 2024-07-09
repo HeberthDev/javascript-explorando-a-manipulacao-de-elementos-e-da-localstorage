@@ -6,10 +6,12 @@ const textarea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
 const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 
+const btnRemoverConcluidas = document.querySelector('#btn-remover-concluidas');
+
 /*As tarefas estão desse jeito porquê está retornando as tarefas salvas. E caso a pessoa entre a primeira
 vez na aplicação não vai ter nada ainda salvo no localStorage. Então pra se prevenir disso, caso tenha algo
 vai retornar e caso não tenha vai retornar vazio pra justamente termos um array pra jogarmos tarefas dentro.*/
-const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 let tarefaSelecionada = null;
 let liTarefaSelecionada = null;
 
@@ -69,7 +71,7 @@ function criaElementoTarefa(tarefa) {
 
     if (tarefa.completa) {
         li.classList.add('app__section-task-list-item-complete');
-        botao.querySelector('button').setAttribute('disabled', 'disabled');
+        botao.setAttribute('disabled', 'disabled');
     } else {
         li.onclick = () => {
             document.querySelectorAll('.app__section-task-list-item-active').forEach((elemento) => {
@@ -101,7 +103,7 @@ btnAdicionarTarefa.addEventListener('click', () => {
 formAdicionarTarefa.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const tarefa = {
-        descricao: textarea.value
+        descricao: textarea.value,
     };
 
     tarefas.push(tarefa);
@@ -126,3 +128,13 @@ document.addEventListener('FocoFinalizado', () => {
         atualizarTarefas();
     }
 });
+
+btnRemoverConcluidas.onclick = () => {
+    const seletor = '.app__section-task-list-item-complete';
+    document.querySelectorAll(seletor).forEach(elemento => {
+        elemento.remove();
+    });
+
+    tarefas = tarefas.filter(tarefa => !tarefa.completa);
+    atualizarTarefas();
+}
