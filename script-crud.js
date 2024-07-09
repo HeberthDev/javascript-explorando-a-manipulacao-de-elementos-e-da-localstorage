@@ -7,6 +7,7 @@ const ulTarefas = document.querySelector('.app__section-task-list');
 const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 
 const btnRemoverConcluidas = document.querySelector('#btn-remover-concluidas');
+const btnRemoverTodas = document.querySelector('#btn-remover-todas');
 
 /*As tarefas estão desse jeito porquê está retornando as tarefas salvas. E caso a pessoa entre a primeira
 vez na aplicação não vai ter nada ainda salvo no localStorage. Então pra se prevenir disso, caso tenha algo
@@ -129,12 +130,15 @@ document.addEventListener('FocoFinalizado', () => {
     }
 });
 
-btnRemoverConcluidas.onclick = () => {
-    const seletor = '.app__section-task-list-item-complete';
+const removerTarefas = (somenteCompletas) => {
+    const seletor = somenteCompletas ? '.app__section-task-list-item-complete' : '.app__section-task-list-item';
     document.querySelectorAll(seletor).forEach(elemento => {
         elemento.remove();
     });
 
-    tarefas = tarefas.filter(tarefa => !tarefa.completa);
+    tarefas = somenteCompletas ? tarefas.filter(tarefa => !tarefa.completa) : [];
     atualizarTarefas();
 }
+
+btnRemoverConcluidas.onclick = () => removerTarefas(true);
+btnRemoverTodas.onclick = () => removerTarefas(false);
